@@ -1,13 +1,14 @@
 import { NgModule } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
 import { HomeComponent } from './home/home.component';
-import { ProductComponent } from './product/product.component';
+import { ProductComponent, Product } from './product/product.component';
 import { Code404Component } from './code404/code404.component';
 import { ProductDescComponent } from './product-desc/product-desc.component';
 import { SellerInfoComponent } from './seller-info/seller-info.component';
 import { ChatComponent } from './chat/chat.component';
 import { LoginGuard } from './guard/login.guard';
 import { UnsavedGuard } from './guard/unsaved.guard';
+import { ProductResolve } from './guard/product.resolve';
 
 
 // 路由配置  Routes   跟路由
@@ -21,15 +22,19 @@ const routes: Routes = [
     children: [
       { path: '', component: ProductDescComponent },
       { path: 'seller/:id', component: SellerInfoComponent }
-    ], canActivate: [LoginGuard],
-    canDeactivate: [UnsavedGuard]
-  },  // 修改路由配置，可以传递参数   // canActivate 和 canDeactivate配置在商品信息路由中
+    ],
+    // canActivate: [LoginGuard],
+    // canDeactivate: [UnsavedGuard], // canActivate 和 canDeactivate配置在商品信息路由中,为了看到resolve效果先注释掉
+    resolve: {
+      product: ProductResolve
+    }
+  },  // 修改路由配置，可以传递参数   
   { path: '**', component: Code404Component }    // 通配符路由  放在路由最后
 ];
 
 @NgModule({
   imports: [RouterModule.forRoot(routes)],
   exports: [RouterModule],
-  providers: [LoginGuard, UnsavedGuard]
+  providers: [LoginGuard, UnsavedGuard, ProductResolve]
 })
 export class AppRoutingModule { }
