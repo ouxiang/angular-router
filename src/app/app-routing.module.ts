@@ -6,12 +6,14 @@ import { Code404Component } from './code404/code404.component';
 import { ProductDescComponent } from './product-desc/product-desc.component';
 import { SellerInfoComponent } from './seller-info/seller-info.component';
 import { ChatComponent } from './chat/chat.component';
+import { LoginGuard } from './guard/login.guard';
+import { UnsavedGuard } from './guard/unsaved.guard';
 
 
 // 路由配置  Routes   跟路由
 const routes: Routes = [
   { path: '', redirectTo: '/home', pathMatch: 'full' },  // 路由重定向
-  { path: 'chat', component: ChatComponent, outlet: 'aux' },
+  { path: 'chat', component: ChatComponent, outlet: 'aux' },  // 辅助路由   outlet  当前路由显示在哪个插座上
   { path: 'home', component: HomeComponent }, // 一组路由组件
   // { path: 'product', component: ProductComponent },
   {
@@ -19,13 +21,15 @@ const routes: Routes = [
     children: [
       { path: '', component: ProductDescComponent },
       { path: 'seller/:id', component: SellerInfoComponent }
-    ]
-  },  // 修改路由配置，可以传递参数
+    ], canActivate: [LoginGuard],
+    canDeactivate: [UnsavedGuard]
+  },  // 修改路由配置，可以传递参数   // canActivate 和 canDeactivate配置在商品信息路由中
   { path: '**', component: Code404Component }    // 通配符路由  放在路由最后
 ];
 
 @NgModule({
   imports: [RouterModule.forRoot(routes)],
-  exports: [RouterModule]
+  exports: [RouterModule],
+  providers: [LoginGuard, UnsavedGuard]
 })
 export class AppRoutingModule { }
