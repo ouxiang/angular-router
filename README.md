@@ -18,12 +18,15 @@ Routes:
 path:/user, component：A
 path:/order,component：B
 
-                 AppComponent
-模板                                     控制器
-RouterOutlet                            Router
-RouterLink	                            ActivatedRoute
+AppComponent：
 
+模板                                     
+RouterOutlet                            
+RouterLink	                          
 
+控制器
+Router
+ActivatedRoute
 
 在查询参数中传递数据
 
